@@ -1,0 +1,39 @@
+TODO list:
+
+ * create character and movement
+
+ * improve different characters: race, role, gender 
+
+ * design skills and invetory
+
+ * make simple map and editor
+
+ * add procedure generation world
+
+ * make FOV
+
+ * implement beggining screen with the choice of character
+
+ * make pathfinding
+
+ * design GUI-menu
+
+ * add save/laod
+
+ * make monsters and programming AI
+
+ * make combat system
+
+ * add generation level-monsters
+
+ * add items
+
+ * add different things in rooms
+
+ * make lore and settings
+
+ * make shop
+
+ * make spells and alchemy
+
+ * make crafting
