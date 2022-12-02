@@ -1,0 +1,7 @@
+# exec files
+*.elf
+
+# object dir
+obj/*
+
+# 
