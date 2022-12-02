@@ -1,10 +1,12 @@
 #include <ncurses.h>
 
+#include "../include/display.h"
+
 int main(void) {
-    initscr();
-    printw("Hello world!\n");
-    refresh();
+    screenSetup(DEFAULT);
+
     getch();
+
     endwin();
     return 0;
 }
