@@ -5,6 +5,7 @@
 int main(void) {
     screenSetup(DEFAULT);
 
+    screenDraw();
     getch();
 
     endwin();

@@ -9,3 +9,8 @@ void screenSetup(uint32_t set) {
         refresh();
     }
 }
+
+void screenDraw() {
+    drawmap();
+    refresh();
+}
