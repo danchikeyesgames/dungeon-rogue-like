@@ -4,5 +4,8 @@
 # object dir
 obj/*
 
-# vscode configuration
+# vscode configuration dir
 .vscode/*
+
+# no compled lib
+lib/C11-containers-lib/
