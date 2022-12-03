@@ -1,3 +1,5 @@
+#include <ncurses.h>
+
 #include "../include/player.h"
 
 player_ptr create_player(pos_ptr ps, char c, size_t hp) {
@@ -9,4 +11,13 @@ player_ptr create_player(pos_ptr ps, char c, size_t hp) {
     person->sym = c;
 
     return person;
+}
+
+void move_player(pos_ptr ps, player_ptr pl) {
+    pl->pos.x = ps->x;
+    pl->pos.y = ps->y;
+}
+
+void drawplayer(player_ptr pl) {
+    mvprintw(pl->pos.y, pl->pos.x, &pl->sym);
 }
