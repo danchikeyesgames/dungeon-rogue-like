@@ -10,6 +10,7 @@ void screenSetup(uint32_t set) {
     if (set == DEFAULT) {
         printw("dungeon");
         noecho();
+        keypad(stdscr, true);
         refresh();
     }
 }

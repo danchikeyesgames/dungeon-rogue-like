@@ -15,5 +15,6 @@ typedef struct Player {
 player_ptr create_player(pos_ptr ps, char c, size_t hp);
 void move_player(pos_ptr ps, player_ptr pl);
 void drawplayer(player_ptr pl);
+void control_player(player_ptr pl, int key);
 
 #endif      // __PLAYER_H__
