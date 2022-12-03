@@ -9,3 +9,6 @@ obj/*
 
 # no compled lib
 lib/C11-containers-lib/
+
+# makefile
+Makefile
