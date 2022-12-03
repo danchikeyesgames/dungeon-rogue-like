@@ -1,6 +1,8 @@
 TODO list:
 
- * create character and movement
+ - (READY) create character and movement
+
+ * make collision with map
 
  * improve different characters: race, role, gender 
 
