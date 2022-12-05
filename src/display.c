@@ -17,8 +17,8 @@ void screenSetup(uint32_t set) {
 
 void screenDraw(player_ptr pl) {
     drawmap();
-    drawplayer(pl);
-    move_cursor(&pl->pos);
+    //drawplayer(pl);
+    //move_cursor(&pl->pos);
     refresh();
 }
 
