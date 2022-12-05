@@ -97,13 +97,14 @@ void BSP_split(void) {
             }
         }
     }
+
+    create_rooms(leaf_root);
 }
 
 void drawmap(void) {
     size_t sizevec = cvector_get_size(lvec);
 
     for (size_t i = 0; i < sizevec; ++i) {
-
         if (lvec[i]->left == NULL && lvec[i]->right == NULL) {
             for (size_t j = 0; j < lvec[i]->width; j++)
                 mvprintw(lvec[i]->y, lvec[i]->x + j, "#");
@@ -116,6 +117,52 @@ void drawmap(void) {
 
             for (size_t j = 0; j <= lvec[i]->width; j++)
                 mvprintw(lvec[i]->y + lvec[i]->height, lvec[i]->x + j, "#");
+        
+            // draw rooms
+
         }
+
+    }
+
+
+    for (size_t i = 0; i < sizevec; ++i) {
+        if (lvec[i]->left == NULL && lvec[i]->right == NULL) {
+            for (size_t j = 0; j <= lvec[i]->room->w; j++)
+                mvprintw(lvec[i]->room->y, lvec[i]->room->x + j, "-");
+
+            for (size_t j = 1; j < lvec[i]->room->h; j++)
+                mvprintw(lvec[i]->room->y + j, lvec[i]->room->x, "|");
+
+            for (size_t j = 1; j < lvec[i]->room->h; j++)
+                mvprintw(lvec[i]->room->y + j, lvec[i]->room->x + lvec[i]->room->w, "|");
+
+            for (size_t j = 0; j <= lvec[i]->room->w; j++)
+                mvprintw(lvec[i]->room->y + lvec[i]->room->h, lvec[i]->room->x + j, "-");
+        }
+    }
+}
+
+void create_rooms(leaf_ptr l) {
+    int x, y, w, h;
+
+    if (l->left != NULL || l->right != NULL) {
+        if (l->left != NULL)
+            create_rooms(l->left);
+        
+        if (l->right != NULL)
+            create_rooms(l->right);
+    } else {
+        pos_t point_pos;
+        pos_t point_sz;
+
+        w = 3 + rand() % (l->width - 4);
+        h = 3 + rand() % (l->height - 4);
+        savePos(w, h, &point_sz);
+
+        x = 1 + rand() % (l->width - w - 1);
+        y = 1 + rand() % (l->height - h - 1);
+        savePos(l->x + x, l->y + y, &point_pos);
+
+        l->room = room_create(&point_pos, &point_sz);
     }
 }

@@ -43,7 +43,7 @@ void drawmap(void);
 leaf_t* leaf_create(int x, int y, int w, int h);
 bool leaf_split(leaf_ptr l);
 void BSP_split(void);
-
+void create_rooms(leaf_ptr l);
 
 
 #endif          // __MAP_H__
