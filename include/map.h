@@ -11,13 +11,13 @@
 #include "../lib/C11-containers-lib/cvector/cvector.h"
 #include "../lib/C11-containers-lib/cstack/cstack.h"
 
-#define HEIGHT 40
-#define WIDTH  80
+#define HEIGHT 30
+#define WIDTH  60
 #define HEIGHTVIEW 25
 #define WIDTHVIEW  80
 
 #define MIN_LEAF_SIZE 6
-#define MAX_LEAF_SIZE 16
+#define MAX_LEAF_SIZE 20
 
 typedef struct _Map {
     cvector_t(room_ptr) rooms;
