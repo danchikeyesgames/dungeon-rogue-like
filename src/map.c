@@ -22,8 +22,8 @@
 //     mvprintw(9, 1, map_room[7]);
 // }
 
-cvector_t(leaf_ptr) lvec;
-leaf_ptr leaf_root;
+cvector_t(leaf_ptr) lvec = NULL;
+leaf_ptr leaf_root = NULL;
 
 leaf_t* leaf_create(int x, int y, int w, int h) {
     leaf_ptr newLeaf = (leaf_ptr) malloc(sizeof(leaf_t));
@@ -44,29 +44,27 @@ bool leaf_split(leaf_ptr l) {
     int plc_split;
     bool splitH;
     
-    if (l->left != NULL && l->right != NULL) {
+    if (l->left != NULL || l->right != NULL) {
         return false;
     }
 
-    srand(time(NULL));
     splitH = rand() % 2;
     if (l->height >= 1.25 * l->width)
         splitH = true;
     else if (l->width >= 1.25 * l->height)
         splitH = false;
 
-    max = splitH ? l->height : l->width - MIN_LEAF_SIZE;
+    max = (splitH ? l->height : l->width) - MIN_LEAF_SIZE;
     if (max < MIN_LEAF_SIZE)
         return false;
 
-    srand(time(NULL));
-    plc_split = MIN_LEAF_SIZE + rand() % (max - 1);     // random numbet between (MIN_LEAF_SIZE, max)
+    plc_split = MIN_LEAF_SIZE + rand() % (max - MIN_LEAF_SIZE + 1);     // random numbet between (MIN_LEAF_SIZE, max)
     if (splitH) {
         l->left = leaf_create(l->x, l->y, l->width, plc_split);
-        l->right = leaf_create(l->x, l->y, l->width, l->height - plc_split);
+        l->right = leaf_create(l->x, l->y + plc_split, l->width, l->height - plc_split);
     } else {
         l->left = leaf_create(l->x, l->y, plc_split, l->height);
-        l->right = leaf_create(l->x, l->y, l->width - plc_split, l->height);
+        l->right = leaf_create(l->x + plc_split, l->y, l->width - plc_split, l->height);
     }
 
     return true;
@@ -75,8 +73,9 @@ bool leaf_split(leaf_ptr l) {
 void BSP_split(void) {
     bool check_split = true;
 
-    cvector_push_back(lvec, leaf_root);
     leaf_root = leaf_create(0, 0, WIDTH, HEIGHT);
+    cvector_push_back(lvec, leaf_root);
+    srand(time(NULL));
 
     while (check_split) {
         size_t sizevec = cvector_get_size(lvec);
@@ -86,17 +85,37 @@ void BSP_split(void) {
         
         for (size_t i = 0; i < sizevec; ++i) {
             if (lvec[i]->left == NULL && lvec[i]->right == NULL) {
-                srand(time(NULL));
                 rndnum = 1 + rand() % 100;
                 if (lvec[i]->width > MAX_LEAF_SIZE || lvec[i]->height > MAX_LEAF_SIZE || rndnum < 75) {
-                    check_split = leaf_split(lvec[i]);
 
-                    if (check_split) {
+                    if (leaf_split(lvec[i])) {
                         cvector_push_back(lvec, lvec[i]->left);
                         cvector_push_back(lvec, lvec[i]->right);
+                        check_split = true;
                     }
                 }
             }
+        }
+    }
+}
+
+void drawmap(void) {
+    size_t sizevec = cvector_get_size(lvec);
+
+    for (size_t i = 0; i < sizevec; ++i) {
+
+        if (lvec[i]->left == NULL && lvec[i]->right == NULL) {
+            for (size_t j = 0; j < lvec[i]->width; j++)
+                mvprintw(lvec[i]->y, lvec[i]->x + j, "#");
+
+            for (size_t j = 0; j < lvec[i]->height; j++)
+                mvprintw(lvec[i]->y + j, lvec[i]->x, "#");
+
+            for (size_t j = 0; j < lvec[i]->height; j++)
+                mvprintw(lvec[i]->y + j, lvec[i]->x + lvec[i]->width, "#");
+
+            for (size_t j = 0; j <= lvec[i]->width; j++)
+                mvprintw(lvec[i]->y + lvec[i]->height, lvec[i]->x + j, "#");
         }
     }
 }

@@ -16,6 +16,7 @@ void screenSetup(uint32_t set) {
 }
 
 void screenDraw(player_ptr pl) {
+    BSP_split();
     drawmap();
     //drawplayer(pl);
     //move_cursor(&pl->pos);

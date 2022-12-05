@@ -11,13 +11,13 @@
 #include "../lib/C11-containers-lib/cvector/cvector.h"
 #include "../lib/C11-containers-lib/cstack/cstack.h"
 
-#define HEIGHT 80
-#define WIDTH  120
+#define HEIGHT 40
+#define WIDTH  80
 #define HEIGHTVIEW 25
 #define WIDTHVIEW  80
 
 #define MIN_LEAF_SIZE 6
-#define MAX_LEAF_SIZE 20
+#define MAX_LEAF_SIZE 16
 
 typedef struct _Map {
     cvector_t(room_ptr) rooms;
@@ -39,7 +39,7 @@ typedef struct _Leaf {
 
 
 
-void drawmap();
+void drawmap(void);
 leaf_t* leaf_create(int x, int y, int w, int h);
 bool leaf_split(leaf_ptr l);
 void BSP_split(void);
