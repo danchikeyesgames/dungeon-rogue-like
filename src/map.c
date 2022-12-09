@@ -103,6 +103,7 @@ void BSP_split(void) {
 
 void drawmap(void) {
     size_t sizevec = cvector_get_size(lvec);
+    size_t sizehall = 0;
 
     for (size_t i = 0; i < sizevec; ++i) {
         if (lvec[i]->left == NULL && lvec[i]->right == NULL) {
@@ -117,14 +118,11 @@ void drawmap(void) {
 
             for (size_t j = 0; j <= lvec[i]->width; j++)
                 mvprintw(lvec[i]->y + lvec[i]->height, lvec[i]->x + j, "#");
-        
-            // draw rooms
-
         }
 
     }
 
-
+    // draw rooms
     for (size_t i = 0; i < sizevec; ++i) {
         if (lvec[i]->left == NULL && lvec[i]->right == NULL) {
             for (size_t j = 0; j <= lvec[i]->room->w; j++)
@@ -140,10 +138,31 @@ void drawmap(void) {
                 mvprintw(lvec[i]->room->y + lvec[i]->room->h, lvec[i]->room->x + j, "-");
         }
     }
+
+    // draw halls
+    for (size_t i = 0; i < sizevec; ++i) {
+        if (lvec[i]->left != NULL && lvec[i]->right != NULL) {
+            if (lvec[i]->halls != NULL) {
+                sizehall = cvector_get_size(lvec[i]->halls);
+                for (size_t j = 0; j < sizehall; ++j) {
+                    if (lvec[i]->halls[j]->h == 1) {
+                        for (int k = 0; k < lvec[i]->halls[j]->w; ++k)
+                            mvprintw(lvec[i]->halls[j]->y, lvec[i]->halls[j]->x + k, "*");
+                    } else {
+                        for (int k = 0; k < lvec[i]->halls[j]->h; ++k)
+                            mvprintw(lvec[i]->halls[j]->y + k, lvec[i]->halls[j]->x, "*");
+                    }
+                }
+            }
+        }
+    }
+
 }
 
 void create_rooms(leaf_ptr l) {
     int x, y, w, h;
+    room_ptr tmp_left;
+    room_ptr tmp_right;
 
     if (l->left != NULL || l->right != NULL) {
         if (l->left != NULL)
@@ -151,6 +170,12 @@ void create_rooms(leaf_ptr l) {
         
         if (l->right != NULL)
             create_rooms(l->right);
+
+        if (l->right != NULL && l->left != NULL) {
+            tmp_left = room_get(l->left);
+            tmp_right = room_get(l->right);
+            create_halls(tmp_left, tmp_right, l);
+        }
     } else {
         pos_t point_pos;
         pos_t point_sz;
@@ -165,4 +190,162 @@ void create_rooms(leaf_ptr l) {
 
         l->room = room_create(&point_pos, &point_sz);
     }
+}
+
+room_ptr room_get(leaf_ptr l) {
+    if (l->room != NULL) {
+        return l->room;
+    } else {
+        room_ptr lroom;
+        room_ptr rroom;
+
+        if (l->left != NULL) {
+            lroom = room_get(l->left);
+        }
+
+        if (l->right != NULL) {
+            rroom = room_get(l->right);
+        }
+
+        if (rroom == NULL && lroom == NULL)
+            return NULL;
+
+        if (rroom == NULL)
+            return lroom;
+
+        else if (lroom == NULL)
+            return rroom;
+
+        else {
+            int rndnum = 1 + rand() % 100; 
+            if (rndnum <= 50)
+                return lroom;
+            else
+                return rroom;
+        }
+    }
+}
+
+void create_halls(room_ptr lr, room_ptr rr, leaf_ptr leaf) {
+    pos_t p1, p2, sz, point;
+    hall_ptr newHall;
+    int rn = 0;
+
+    srand(time(NULL));
+    savePos(1 + rand() % (lr->x + lr->w), 1 + rand() % (lr->y + lr->h), &p1);
+    savePos(1 + rand() % (rr->x + rr->w), 1 + rand() % (rr->y + rr->h), &p2);
+
+    leaf->halls = cvector_init(hall_ptr, 2);
+
+    int w = p2.x - p1.x;
+    int h = p2.y - p1.y;
+
+    if (w < 0) {
+		if (h < 0) {
+			rn = rand() % 2;
+            if (rn == 1) {
+                savePos(abs(w), 1, &sz);
+                newHall = hall_create(&p2, &sz);
+                cvector_push_back(leaf->halls, newHall);
+
+                savePos(p1.x, p2.y, &point);
+                savePos(1, abs(h), &sz);
+                newHall = hall_create(&point, &sz);
+                cvector_push_back(leaf->halls, newHall);
+            } else {
+                savePos(1, abs(h), &sz);
+                newHall = hall_create(&p2, &sz);
+                cvector_push_back(leaf->halls, newHall);
+
+                savePos(p2.x, abs(h) + p2.y, &point);
+                savePos(abs(w), 1, &sz);
+                newHall = hall_create(&point, &sz);
+                cvector_push_back(leaf->halls, newHall);
+            }
+		} else if (h > 0) {
+            rn = rand() % 2;
+            if (rn == 1) {
+                savePos(abs(w), 1, &sz);
+                newHall = hall_create(&p2, &sz);
+                cvector_push_back(leaf->halls, newHall);
+
+                savePos(p1.x, p1.y, &point);
+                savePos(1, abs(h), &sz);
+                newHall = hall_create(&point, &sz);
+                cvector_push_back(leaf->halls, newHall);
+            } else {
+                savePos(1, abs(h), &sz);
+                savePos(p2.x, p1.y, &point);
+                newHall = hall_create(&point, &sz);
+                cvector_push_back(leaf->halls, newHall);
+
+                savePos(p2.x, p1.y, &point);
+                savePos(abs(w), 1, &sz);
+                newHall = hall_create(&point, &sz);
+                cvector_push_back(leaf->halls, newHall);
+            }
+		} else {
+			savePos(abs(w), 1, &sz);
+            newHall = hall_create(&p2, &sz);
+            cvector_push_back(leaf->halls, newHall);
+		}
+	} else if (w > 0) {
+		if (h < 0) {
+            rn = rand() % 2;
+            if (rn == 1) {
+                savePos(abs(w), 1, &sz);
+                newHall = hall_create(&p1, &sz);
+                cvector_push_back(leaf->halls, newHall);
+
+                savePos(p2.x, p2.y, &point);
+                savePos(1, abs(h), &sz);
+                newHall = hall_create(&point, &sz);
+                cvector_push_back(leaf->halls, newHall);
+            } else {
+                savePos(p1.x, p2.y, &point);
+                savePos(1, abs(h), &sz);
+                newHall = hall_create(&point, &sz);
+                cvector_push_back(leaf->halls, newHall);
+            
+                savePos(abs(w), 1, &sz);
+                newHall = hall_create(&point, &sz);
+                cvector_push_back(leaf->halls, newHall);
+            }
+		} else if (h > 0) {
+            rn = rand() % 2;
+            if (rn == 1) {
+                savePos(abs(w), 1, &sz);
+                newHall = hall_create(&p1, &sz);
+                cvector_push_back(leaf->halls, newHall);
+
+                savePos(p2.x, p1.y, &point);
+                savePos(1, abs(h), &sz);
+                newHall = hall_create(&point, &sz);
+                cvector_push_back(leaf->halls, newHall);
+            } else {
+                savePos(1, abs(h), &sz);
+                newHall = hall_create(&p1, &sz);
+                cvector_push_back(leaf->halls, newHall);
+
+                savePos(p1.x, abs(h) + p1.y, &point);
+                savePos(abs(w), 1, &sz);
+                newHall = hall_create(&point, &sz);
+                cvector_push_back(leaf->halls, newHall);
+            }
+		} else {
+			savePos(abs(w), 1, &sz);
+            newHall = hall_create(&p1, &sz);
+            cvector_push_back(leaf->halls, newHall);
+		}
+	} else {
+        if (h > 0) {
+            savePos(1, h, &sz);
+            newHall = hall_create(&p1, &sz);
+            cvector_push_back(leaf->halls, newHall);
+        } else if (h < 0) {
+            savePos(1, abs(h), &sz);
+            newHall = hall_create(&p2, &sz);
+            cvector_push_back(leaf->halls, newHall);
+        }
+	}
 }

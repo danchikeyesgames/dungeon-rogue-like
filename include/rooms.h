@@ -16,5 +16,6 @@ typedef struct _Tunnel {
 } hall_t, *hall_ptr;
 
 room_ptr    room_create(pos_ptr pos, pos_ptr sz);
+hall_ptr    hall_create(pos_ptr pos, pos_ptr sz);
 
 #endif      // __ROOMS_H__
