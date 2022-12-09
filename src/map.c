@@ -232,8 +232,8 @@ void create_halls(room_ptr lr, room_ptr rr, leaf_ptr leaf) {
     int rn = 0;
 
     srand(time(NULL));
-    savePos(1 + rand() % (lr->x + lr->w), 1 + rand() % (lr->y + lr->h), &p1);
-    savePos(1 + rand() % (rr->x + rr->w), 1 + rand() % (rr->y + rr->h), &p2);
+    savePos(lr->x + 1 + rand() % (lr->w), lr->y + 1 + rand() % (lr->h), &p1);
+    savePos(rr->x + 1 + rand() % (rr->w), rr->y + 1 + rand() % (rr->h), &p2);
 
     leaf->halls = cvector_init(hall_ptr, 2);
 
