@@ -7,7 +7,7 @@ obj/*
 # vscode configuration dir
 .vscode/*
 
-# no compled lib
+# no compiled lib
 lib/C11-containers-lib/
 
 # makefile
