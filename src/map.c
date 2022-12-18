@@ -1,4 +1,4 @@
-#include "../include/map.h"
+#include "map.h"
 
 // char map_room[20][20] = {
 //     {"-------------------"},
@@ -22,7 +22,7 @@
 //     mvprintw(9, 1, map_room[7]);
 // }
 
-cvector_t(leaf_ptr) lvec = NULL;
+cvector_t(leaf_ptr) leaf_rooms = NULL;
 leaf_ptr leaf_root = NULL;
 
 leaf_t* leaf_create(int x, int y, int w, int h) {
@@ -74,23 +74,23 @@ void BSP_split(void) {
     bool check_split = true;
 
     leaf_root = leaf_create(0, 0, WIDTH, HEIGHT);
-    cvector_push_back(lvec, leaf_root);
+    cvector_push_back(leaf_rooms, leaf_root);
     srand(time(NULL));
 
     while (check_split) {
-        size_t sizevec = cvector_get_size(lvec);
+        size_t sizevec = cvector_get_size(leaf_rooms);
         int rndnum;
 
         check_split = false;
         
         for (size_t i = 0; i < sizevec; ++i) {
-            if (lvec[i]->left == NULL && lvec[i]->right == NULL) {
+            if (leaf_rooms[i]->left == NULL && leaf_rooms[i]->right == NULL) {
                 rndnum = 1 + rand() % 100;
-                if (lvec[i]->width > MAX_LEAF_SIZE || lvec[i]->height > MAX_LEAF_SIZE || rndnum < 75) {
+                if (leaf_rooms[i]->width > MAX_LEAF_SIZE || leaf_rooms[i]->height > MAX_LEAF_SIZE || rndnum < 75) {
 
-                    if (leaf_split(lvec[i])) {
-                        cvector_push_back(lvec, lvec[i]->left);
-                        cvector_push_back(lvec, lvec[i]->right);
+                    if (leaf_split(leaf_rooms[i])) {
+                        cvector_push_back(leaf_rooms, leaf_rooms[i]->left);
+                        cvector_push_back(leaf_rooms, leaf_rooms[i]->right);
                         check_split = true;
                     }
                 }
@@ -98,59 +98,59 @@ void BSP_split(void) {
         }
     }
 
-    create_rooms(leaf_root);
+    init_rooms(leaf_root);
 }
 
 void drawmap(void) {
-    size_t sizevec = cvector_get_size(lvec);
+    size_t sizevec = cvector_get_size(leaf_rooms);
     size_t sizehall = 0;
 
-    for (size_t i = 0; i < sizevec; ++i) {
-        if (lvec[i]->left == NULL && lvec[i]->right == NULL) {
-            for (size_t j = 0; j < lvec[i]->width; j++)
-                mvprintw(lvec[i]->y, lvec[i]->x + j, "#");
+    // for (size_t i = 0; i < sizevec; ++i) {
+    //     if (lvec[i]->left == NULL && lvec[i]->right == NULL) {
+    //         for (size_t j = 0; j < lvec[i]->width; j++)
+    //             mvprintw(lvec[i]->y, lvec[i]->x + j, "#");
 
-            for (size_t j = 0; j < lvec[i]->height; j++)
-                mvprintw(lvec[i]->y + j, lvec[i]->x, "#");
+    //         for (size_t j = 0; j < lvec[i]->height; j++)
+    //             mvprintw(lvec[i]->y + j, lvec[i]->x, "#");
 
-            for (size_t j = 0; j < lvec[i]->height; j++)
-                mvprintw(lvec[i]->y + j, lvec[i]->x + lvec[i]->width, "#");
+    //         for (size_t j = 0; j < lvec[i]->height; j++)
+    //             mvprintw(lvec[i]->y + j, lvec[i]->x + lvec[i]->width, "#");
 
-            for (size_t j = 0; j <= lvec[i]->width; j++)
-                mvprintw(lvec[i]->y + lvec[i]->height, lvec[i]->x + j, "#");
-        }
+    //         for (size_t j = 0; j <= lvec[i]->width; j++)
+    //             mvprintw(lvec[i]->y + lvec[i]->height, lvec[i]->x + j, "#");
+    //     }
 
-    }
+    // }
 
     // draw rooms
     for (size_t i = 0; i < sizevec; ++i) {
-        if (lvec[i]->left == NULL && lvec[i]->right == NULL) {
-            for (size_t j = 0; j <= lvec[i]->room->w; j++)
-                mvprintw(lvec[i]->room->y, lvec[i]->room->x + j, "-");
+        if (leaf_rooms[i]->left == NULL && leaf_rooms[i]->right == NULL) {
+            for (size_t j = 0; j <= leaf_rooms[i]->room->w; j++)
+                mvprintw(leaf_rooms[i]->room->y, leaf_rooms[i]->room->x + j, "-");
 
-            for (size_t j = 1; j < lvec[i]->room->h; j++)
-                mvprintw(lvec[i]->room->y + j, lvec[i]->room->x, "|");
+            for (size_t j = 1; j < leaf_rooms[i]->room->h; j++)
+                mvprintw(leaf_rooms[i]->room->y + j, leaf_rooms[i]->room->x, "|");
 
-            for (size_t j = 1; j < lvec[i]->room->h; j++)
-                mvprintw(lvec[i]->room->y + j, lvec[i]->room->x + lvec[i]->room->w, "|");
+            for (size_t j = 1; j < leaf_rooms[i]->room->h; j++)
+                mvprintw(leaf_rooms[i]->room->y + j, leaf_rooms[i]->room->x + leaf_rooms[i]->room->w, "|");
 
-            for (size_t j = 0; j <= lvec[i]->room->w; j++)
-                mvprintw(lvec[i]->room->y + lvec[i]->room->h, lvec[i]->room->x + j, "-");
+            for (size_t j = 0; j <= leaf_rooms[i]->room->w; j++)
+                mvprintw(leaf_rooms[i]->room->y + leaf_rooms[i]->room->h, leaf_rooms[i]->room->x + j, "-");
         }
     }
 
     // draw halls
     for (size_t i = 0; i < sizevec; ++i) {
-        if (lvec[i]->left != NULL && lvec[i]->right != NULL) {
-            if (lvec[i]->halls != NULL) {
-                sizehall = cvector_get_size(lvec[i]->halls);
+        if (leaf_rooms[i]->left != NULL && leaf_rooms[i]->right != NULL) {
+            if (leaf_rooms[i]->halls != NULL) {
+                sizehall = cvector_get_size(leaf_rooms[i]->halls);
                 for (size_t j = 0; j < sizehall; ++j) {
-                    if (lvec[i]->halls[j]->h == 1) {
-                        for (int k = 0; k < lvec[i]->halls[j]->w; ++k)
-                            mvprintw(lvec[i]->halls[j]->y, lvec[i]->halls[j]->x + k, "*");
+                    if (leaf_rooms[i]->halls[j]->h == 1) {
+                        for (int k = 0; k <= leaf_rooms[i]->halls[j]->w; ++k)
+                            mvprintw(leaf_rooms[i]->halls[j]->y, leaf_rooms[i]->halls[j]->x + k, "*");
                     } else {
-                        for (int k = 0; k < lvec[i]->halls[j]->h; ++k)
-                            mvprintw(lvec[i]->halls[j]->y + k, lvec[i]->halls[j]->x, "*");
+                        for (int k = 0; k <= leaf_rooms[i]->halls[j]->h; ++k)
+                            mvprintw(leaf_rooms[i]->halls[j]->y + k, leaf_rooms[i]->halls[j]->x, "*");
                     }
                 }
             }
@@ -159,22 +159,22 @@ void drawmap(void) {
 
 }
 
-void create_rooms(leaf_ptr l) {
+void init_rooms(leaf_ptr l) {
     int x, y, w, h;
     room_ptr tmp_left;
     room_ptr tmp_right;
 
     if (l->left != NULL || l->right != NULL) {
         if (l->left != NULL)
-            create_rooms(l->left);
+            init_rooms(l->left);
         
         if (l->right != NULL)
-            create_rooms(l->right);
+            init_rooms(l->right);
 
         if (l->right != NULL && l->left != NULL) {
             tmp_left = room_get(l->left);
             tmp_right = room_get(l->right);
-            create_halls(tmp_left, tmp_right, l);
+            init_halls(tmp_left, tmp_right, l);
         }
     } else {
         pos_t point_pos;
@@ -226,14 +226,14 @@ room_ptr room_get(leaf_ptr l) {
     }
 }
 
-void create_halls(room_ptr lr, room_ptr rr, leaf_ptr leaf) {
+void init_halls(room_ptr lr, room_ptr rr, leaf_ptr leaf) {
     pos_t p1, p2, sz, point;
     hall_ptr newHall;
     int rn = 0;
 
     srand(time(NULL));
-    savePos(lr->x + 1 + rand() % (lr->w), lr->y + 1 + rand() % (lr->h), &p1);
-    savePos(rr->x + 1 + rand() % (rr->w), rr->y + 1 + rand() % (rr->h), &p2);
+    savePos(lr->x + 1 + rand() % (lr->w - 1), lr->y + 1 + rand() % (lr->h - 1), &p1);
+    savePos(rr->x + 1 + rand() % (rr->w - 1), rr->y + 1 + rand() % (rr->h - 1), &p2);
 
     leaf->halls = cvector_init(hall_ptr, 2);
 

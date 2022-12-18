@@ -43,8 +43,8 @@ void        drawmap(void);
 leaf_t*     leaf_create(int x, int y, int w, int h);
 bool        leaf_split(leaf_ptr l);
 void        BSP_split(void);
-void        create_rooms(leaf_ptr l);
-room_ptr    room_get(leaf_ptr l);
-void        create_halls(room_ptr lr, room_ptr rr, leaf_ptr leaf);
+void        init_rooms(leaf_ptr l);
+room_t*     room_get(leaf_ptr l);
+void        init_halls(room_ptr lr, room_ptr rr, leaf_ptr leaf);
 
 #endif          // __MAP_H__

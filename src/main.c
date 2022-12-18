@@ -1,6 +1,6 @@
 #include <ncurses.h>
 
-#include "../include/display.h"
+#include "display.h"
 
 int main(void) {
     pos_t coords;

@@ -1,6 +1,6 @@
-#include "../include/display.h"
-#include "../include/player.h"
-#include "../include/position.h"
+#include "display.h"
+#include "player.h"
+#include "position.h"
 
 static void move_cursor(pos_ptr ps);
 

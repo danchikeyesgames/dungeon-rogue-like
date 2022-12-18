@@ -1,6 +1,6 @@
 #include <ncurses.h>
 
-#include "../include/player.h"
+#include "player.h"
 
 player_ptr create_player(pos_ptr ps, char c, size_t hp) {
     player_ptr person = (player_ptr) malloc(sizeof(player_t));
