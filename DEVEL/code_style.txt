@@ -1,0 +1,16 @@
+# dungeon (all-version)
+# code_style.txt
+# Code-style for programing
+# Copyright (c) 2022 by btw i use arch
+
+dungeon DevTeam Coding Style
+============================
+
+dungeon written in C, include C-style coding. This document focused on primarily with the style
+used for C sources. Script for check style will be attach in repositories, when script will have been released.
+
+Spacing
+-------------------------------------------
+The basic indentation is 4 spaces wide. No tabs.
+
+Line should be at most 80 characters wide.
