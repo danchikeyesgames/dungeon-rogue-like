@@ -6,11 +6,57 @@
 dungeon DevTeam Coding Style
 ============================
 
-dungeon written in C, include C-style coding. This document focused on primarily with the style
-used for C sources. Script for check style will be attach in repositories, when script will have been released.
+Dungeon written in C, include C-style coding. Sources in C use ASCII encoding, so as for console symbols,
+In the future game will transform to Unicode encoding  with support backward compatibility ASCII codes.
+This document are focused on primarily with the style used for C sources. Script for check
+style will be attach in repositories, when script will have been released.
+
 
 Spacing
 -------------------------------------------
 The basic indentation is 4 spaces wide. No tabs.
 
-Line should be at most 80 characters wide.
+Line should be at most 80 characters wide. If a line is longer than the limit, text should be divided.
+It portion should be aligned by 4 spaces in next string.(in case DEFINEs - 8 spaces and symbol '\' at end);
+
+    int i_var
+        = MatrixVibreCultiveNumOfArray;
+
+    #define macrocall(reg, arg)     \
+            reg = arg; 
+
+Single blank line should be used wherever to improve readability and logical to divide independent parts.
+
+
+Definition and declaration functions
+-------------------------------------------
+
+There are two general styles. One with no comments, where arguments are added one after another on one line.
+Then comment must be before definition of function. The return type places in one line.
+
+    /*
+    *  comments style
+    */
+    void fcall_init(int df, char sc) {
+        // body
+    }
+
+The open bracket also places in one line with definition.
+
+The second style has focuse to divide logic portions. For a function definition, the return type,
+declaration, and opening brace should each appear on a line of their own. The comment write in 
+one line.
+
+    void
+    ThreeDivFiveFun(
+        int one,            // one arg
+        int two,            // two arg
+        int three)          // three arg
+    {
+        /* body */
+    }
+
+
+Conditional and cycles
+---------------------------
+
