@@ -28,7 +28,7 @@ It portion should be aligned by 4 spaces in next string.(in case DEFINEs - 8 spa
 Single blank line should be used wherever to improve readability and logical to divide independent parts.
 
 
-Definition and declaration functions
+Definition and declaration of functions
 -------------------------------------------
 
 There are two general styles. One with no comments, where arguments are added one after another on one line.
@@ -92,20 +92,20 @@ Switch statements should have the case labels unindented, and the statements sho
 indented normally. The default case has aligne before aline of thier own. 
 
     switch (condition) {
-    case ONE:
-    case TWO:
-        fcall1();
-        /* fall-through */
-    case THREE:
-        fcall2();
-        break;
+        case ONE:
+        case TWO:
+            fcall1();
+            /* fall-through */
+        case THREE:
+            fcall2();
+            break;
 
-    default:
-        statement;
+        default:
+            statement;
     }
 
-Also used while, for, do while operators. Between operator and opening brace insert single space for
-divide operator from name functions.
+Also used while, for, do while operators. Between operator and opening brace insert single space
+to divide operator from name of functions.
 
     for (int i, i < MAX, ++i) {
         /* cycle */
