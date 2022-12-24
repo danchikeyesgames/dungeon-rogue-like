@@ -57,6 +57,65 @@ one line.
     }
 
 
-Conditional and cycles
----------------------------
+Conditional operators and cycles
+--------------------------------------------------
+
+The control statements IF ELSE:
+
+    if (condition) {
+        // body
+    }
+
+    if (condition)
+        // if one instruction
+    else if (condition 2) {
+        // many instructions
+    } else {
+        // last
+    }
+
+Once it may be required insert instruction in one line after keyword 'else' for improve readibility.
+Without indentations.
+
+    if (condition) {
+        fcall1();
+        fcall2();
+    } else return 0;
+
+
+    if (condition) {
+        fcall1();
+        fcall2();
+    } else fcall3();
+
+Switch statements should have the case labels unindented, and the statements should be
+indented normally. The default case has aligne before aline of thier own. 
+
+    switch (condition) {
+    case ONE:
+    case TWO:
+        fcall1();
+        /* fall-through */
+    case THREE:
+        fcall2();
+        break;
+
+    default:
+        statement;
+    }
+
+Also used while, for, do while operators. Between operator and opening brace insert single space for
+divide operator from name functions.
+
+    for (int i, i < MAX, ++i) {
+        /* cycle */
+    }
+
+    while (condition) {
+        /* while operator */
+    }
+
+    do {
+        // instructions
+    } while (condition);
 
