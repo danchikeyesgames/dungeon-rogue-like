@@ -1,0 +1,34 @@
+# dungeon (all-version)
+# git_branches.txt
+# branches
+# Copyright (c) 2022 by btw i use arch
+
+
+[*] master
+====================
+
+The main branch of changes. There are last logs, features and code had been tested to wait new update.
+
+
+[*] alpha v0.0.0
+--------------------
+
+alpha-test v1.2.3, the last number is new commits, the second number is hotfix, 
+the first number is build for testing.
+
+
+[*] beta v0.0.0
+--------------------
+
+beta-test the more improver test version for release.
+
+[*] release v0.0.0
+--------------------
+
+The main release game version. The last number is fix bugs and gamplay working, the second number is new additions, 
+the first number is global engine build.
+
+[*] test<version>
+--------------------
+
+testing version for developers.
