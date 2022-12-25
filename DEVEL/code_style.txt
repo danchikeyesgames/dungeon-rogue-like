@@ -12,6 +12,26 @@ This document are focused on primarily with the style used for C sources. Script
 style will be attach in repositories, when script will have been released.
 
 
+Common
+-------------------------------------------
+
+New structure/type should been named as <TypeName>_t with typedef operator
+
+    NewType_t abc;
+
+To declare pointer to data see as Type* <varname>, star must place with Type:
+
+    void* ptr;
+
+There are 2 style to name variable. The first case to split words with symbol '_':
+
+    int lamp_light_cs;
+
+The second case the variable name should been splited logical:
+
+    int LampLightCs;
+    
+
 Spacing
 -------------------------------------------
 The basic indentation is 4 spaces wide. No tabs.
@@ -22,7 +42,7 @@ It portion should be aligned by 4 spaces in next string.(in case DEFINEs - 8 spa
     int i_var
         = MatrixVibreCultiveNumOfArray;
 
-    #define macrocall(reg, arg)     \
+    #define macrocall(reg, arg)         \
             reg = arg; 
 
 Single blank line should be used wherever to improve readability and logical to divide independent parts.
@@ -35,8 +55,8 @@ There are two general styles. One with no comments, where arguments are added on
 Then comment must be before definition of function. The return type places in one line.
 
     /*
-    *  comments style
-    */
+     *  comments style
+     */
     void fcall_init(int df, char sc) {
         // body
     }
