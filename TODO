@@ -1,5 +1,8 @@
 TODO list:
 
+    Gamplay:
+    =======
+
  - (READY) create character and movement
 
  * make collision with map
@@ -49,6 +52,42 @@ TODO list:
  * make spells and alchemy
 
  * make crafting
+
+ * add support Unicode encoding
+
+ ? add support window mode
+    
+    REP:
+    =======
+
+ - (READY) add DEVEL dir
+
+ - (READY) add code_style
+
+ - (READY) add description for versions
+
+ * add lib info
+
+ * add info for developers
+
+ * add Makefile
+
+ * add build for libs
+
+ * add bash script for auto build
+
+ * add script-settings
+
+    OS:
+    =======
+
+ * add support Linux
+
+ * add support Unix-famaly systems
+
+ * add support windows
+
+ * add bash script to choose version
 
  -------------------------------------
 
