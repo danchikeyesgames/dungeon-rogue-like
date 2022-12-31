@@ -9,8 +9,8 @@
 
 #include "rooms.h"
 #include "player.h"
-#include "../lib/C11-containers-lib/cvector/cvector.h"
-#include "../lib/C11-containers-lib/cstack/cstack.h"
+#include "../lib/cvector/cvector.h"
+// #include "../lib/C11-containers-lib/cstack/cstack.h"
 
 #define HEIGHT 30
 #define WIDTH  60
